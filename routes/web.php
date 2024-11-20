@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Post;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 
@@ -12,45 +13,12 @@ Route::get('/about', function () {
 });
 
 Route::get('/posts', function () {
-    return view('posts', ['title' => 'Blog', 'posts' => [
-        [
-            'id' => 1,
-            'slug' => 'judul-artikel-1',
-            'title' => 'Judul Artikel 1',
-            'author' => 'Indra Ganendra',
-            'body' => 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio debitis sequi officia asperiores doloremque quisquam, perferendis sapiente eos fugiat corporis earum? Non reprehenderit minima aliquam dolorum alias repellat dolores culpa!'
-        ],
-        [
-            'id' => 2,
-            'slug' => 'judul-artikel-2',
-            'title' => 'Judul Artikel 2',
-            'author' => 'Indra Ganendra',
-            'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem vel blanditiis nesciunt modi dolore, officiis pariatur quia minus sint magni, a cupiditate rem laboriosam. Doloribus ex officia iste iusto illum.'
-        ]
-    ]]);
+    return view('posts', ['title' => 'Blog', 'posts' => Post::all()]);
 });
 
 Route::get('/posts/{slug}', function ($slug) {
-    $posts = [
-        [
-            'id' => 1,
-            'slug' => 'judul-artikel-1',
-            'title' => 'Judul Artikel 1',
-            'author' => 'Indra Ganendra',
-            'body' => 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio debitis sequi officia asperiores doloremque quisquam, perferendis sapiente eos fugiat corporis earum? Non reprehenderit minima aliquam dolorum alias repellat dolores culpa!'
-        ],
-        [
-            'id' => 2,
-            'slug' => 'judul-artikel-2',
-            'title' => 'Judul Artikel 2',
-            'author' => 'Indra Ganendra',
-            'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem vel blanditiis nesciunt modi dolore, officiis pariatur quia minus sint magni, a cupiditate rem laboriosam. Doloribus ex officia iste iusto illum.'
-        ]
-    ];
 
-    $post = Arr::first($posts, function($post) use ($slug) {
-        return $post['slug'] == $slug;
-    });
+    $post = Post::find($slug);
 
     return view('post', ['title' => 'Single Post', 'post' => $post]);
 });
